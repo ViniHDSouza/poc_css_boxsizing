@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box-sizing: Comparação</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .comparison-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .comparison-column {
+    flex: 1;
+    min-width: 300px;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+  }
+  .comparison-column h3 {
+    text-align: center;
+    margin-top: 0;
+  }
+  .demo-box {
+    width: 150px;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+  }
+  .content-box-comp {
+    box-sizing: content-box;
+    background-color: #e0f2ff;
+    border-color: #007bff;
+    color: #0056b3;
+  }
+  .border-box-comp {
+    box-sizing: border-box;
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+  .demo-box::before {
+    content: 'Content Area';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8em;
+    opacity: 0.7;
+  }
+  .metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  .metrics-table th, .metrics-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  .metrics-table th {
+    background-color: #f2f2f2;
+  }
+  .metrics-table td:first-child {
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <h1>📦 Box-sizing: Comparação Lado a Lado</h1>
+  <p>Esta página demonstra a diferença fundamental entre <code>content-box</code> e <code>border-box</code>. Use os controles para ajustar as propriedades e observe como o tamanho final e as métricas de cada caixa mudam.</p>
+
+  <div class="controls">
+    <label for="commonWidth">Width (definido): <span id="commonWidthOutput">150</span>px</label>
+    <input type="range" id="commonWidth" min="50" max="300" value="150">
+
+    <label for="commonHeight">Height (definido): <span id="commonHeightOutput">100</span>px</label>
+    <input type="range" id="commonHeight" min="50" max="200" value="100">
+
+    <label for="commonPadding">Padding: <span id="commonPaddingOutput">20</span>px</label>
+    <input type="range" id="commonPadding" min="0" max="50" value="20">
+
+    <label for="commonBorder">Border: <span id="commonBorderOutput">5</span>px</label>
+    <input type="range" id="commonBorder" min="0" max="20" value="5">
+  </div>
+
+  <div class="comparison-container">
+    <div class="comparison-column">
+      <h3><code>box-sizing: content-box</code></h3>
+      <div id="contentBoxCompDemo" class="demo-box content-box-comp"></div>
+      <table class="metrics-table">
+        <tr><td>Width (definido)</td><td id="cbDefinedWidth">150px</td></tr>
+        <tr><td>Height (definido)</td><td id="cbDefinedHeight">100px</td></tr>
+        <tr><td>Padding</td><td id="cbPadding">20px</td></tr>
+        <tr><td>Border</td><td id="cbBorder">5px</td></tr>
+        <tr><td><strong>Largura Total</strong></td><td id="cbTotalWidth">150px</td></tr>
+        <tr><td><strong>Altura Total</strong></td><td id="cbTotalHeight">100px</td></tr>
+        <tr><td>Largura do Conteúdo</td><td id="cbContentWidth">150px</td></tr>
+        <tr><td>Altura do Conteúdo</td><td id="cbContentHeight">100px</td></tr>
+      </table>
+      <h2>Código CSS</h2>
+      <pre class="code-display" id="cbCssCode">
+.demo-box {
+  box-sizing: content-box;
+  width: 150px;
+  height: 100px;
+  padding: 20px;
+  border: 5px solid #007bff;
+}
+      </pre>
+    </div>
+
+    <div class="comparison-column">
+      <h3><code>box-sizing: border-box</code></h3>
+      <div id="borderBoxCompDemo" class="demo-box border-box-comp"></div>
+      <table class="metrics-table">
+        <tr><td>Width (definido)</td><td id="bbDefinedWidth">150px</td></tr>
+        <tr><td>Height (definido)</td><td id="bbDefinedHeight">100px</td></tr>
+        <tr><td>Padding</td><td id="bbPadding">20px</td></tr>
+        <tr><td>Border</td><td id="bbBorder">5px</td></tr>
+        <tr><td><strong>Largura Total</strong></td><td id="bbTotalWidth">150px</td></tr>
+        <tr><td><strong>Altura Total</strong></td><td id="bbTotalHeight">100px</td></tr>
+        <tr><td>Largura do Conteúdo</td><td id="bbContentWidth">150px</td></tr>
+        <tr><td>Altura do Conteúdo</td><td id="bbContentHeight">100px</td></tr>
+      </table>
+      <h2>Código CSS</h2>
+      <pre class="code-display" id="bbCssCode">
+.demo-box {
+  box-sizing: border-box;
+  width: 150px;
+  height: 100px;
+  padding: 20px;
+  border: 5px solid #28a745;
+}
+      </pre>
+    </div>
+  </div>
+
+  <script>
+    const commonWidthRange = document.getElementById('commonWidth');
+    const commonHeightRange = document.getElementById('commonHeight');
+    const commonPaddingRange = document.getElementById('commonPadding');
+    const commonBorderRange = document.getElementById('commonBorder');
+
+    const commonWidthOutput = document.getElementById('commonWidthOutput');
+    const commonHeightOutput = document.getElementById('commonHeightOutput');
+    const commonPaddingOutput = document.getElementById('commonPaddingOutput');
+    const commonBorderOutput = document.getElementById('commonBorderOutput');
+
+    const contentBoxCompDemo = document.getElementById('contentBoxCompDemo');
+    const borderBoxCompDemo = document.getElementById('borderBoxCompDemo');
+
+    const cbDefinedWidth = document.getElementById('cbDefinedWidth');
+    const cbDefinedHeight = document.getElementById('cbDefinedHeight');
+    const cbPadding = document.getElementById('cbPadding');
+    const cbBorder = document.getElementById('cbBorder');
+    const cbTotalWidth = document.getElementById('cbTotalWidth');
+    const cbTotalHeight = document.getElementById('cbTotalHeight');
+    const cbContentWidth = document.getElementById('cbContentWidth');
+    const cbContentHeight = document.getElementById('cbContentHeight');
+    const cbCssCode = document.getElementById('cbCssCode');
+
+    const bbDefinedWidth = document.getElementById('bbDefinedWidth');
+    const bbDefinedHeight = document.getElementById('bbDefinedHeight');
+    const bbPadding = document.getElementById('bbPadding');
+    const bbBorder = document.getElementById('bbBorder');
+    const bbTotalWidth = document.getElementById('bbTotalWidth');
+    const bbTotalHeight = document.getElementById('bbTotalHeight');
+    const bbContentWidth = document.getElementById('bbContentWidth');
+    const bbContentHeight = document.getElementById('bbContentHeight');
+    const bbCssCode = document.getElementById('bbCssCode');
+
+    function updateComparisonDemo() {
+      const w = parseInt(commonWidthRange.value);
+      const h = parseInt(commonHeightRange.value);
+      const p = parseInt(commonPaddingRange.value);
+      const b = parseInt(commonBorderRange.value);
+
+      commonWidthOutput.textContent = w;
+      commonHeightOutput.textContent = h;
+      commonPaddingOutput.textContent = p;
+      commonBorderOutput.textContent = b;
+
+      // Update Content-box demo
+      contentBoxCompDemo.style.width = `${w}px`;
+      contentBoxCompDemo.style.height = `${h}px`;
+      contentBoxCompDemo.style.padding = `${p}px`;
+      contentBoxCompDemo.style.borderWidth = `${b}px`;
+
+      const cbCalculatedTotalWidth = w + (2 * p) + (2 * b);
+      const cbCalculatedTotalHeight = h + (2 * p) + (2 * b);
+
+      cbDefinedWidth.textContent = `${w}px`;
+      cbDefinedHeight.textContent = `${h}px`;
+      cbPadding.textContent = `${p}px`;
+      cbBorder.textContent = `${b}px`;
+      cbTotalWidth.textContent = `${cbCalculatedTotalWidth}px`;
+      cbTotalHeight.textContent = `${cbCalculatedTotalHeight}px`;
+      cbContentWidth.textContent = `${w}px`;
+      cbContentHeight.textContent = `${h}px`;
+      cbCssCode.textContent = 
+`.demo-box {
+  box-sizing: content-box;
+  width: ${w}px;
+  height: ${h}px;
+  padding: ${p}px;
+  border: ${b}px solid #007bff;
+}`; 
+
+      // Update Border-box demo
+      borderBoxCompDemo.style.width = `${w}px`;
+      borderBoxCompDemo.style.height = `${h}px`;
+      borderBoxCompDemo.style.padding = `${p}px`;
+      borderBoxCompDemo.style.borderWidth = `${b}px`;
+
+      const bbCalculatedContentWidth = Math.max(0, w - (2 * p) - (2 * b));
+      const bbCalculatedContentHeight = Math.max(0, h - (2 * p) - (2 * b));
+
+      bbDefinedWidth.textContent = `${w}px`;
+      bbDefinedHeight.textContent = `${h}px`;
+      bbPadding.textContent = `${p}px`;
+      bbBorder.textContent = `${b}px`;
+      bbTotalWidth.textContent = `${w}px`;
+      bbTotalHeight.textContent = `${h}px`;
+      bbContentWidth.textContent = `${bbCalculatedContentWidth}px`;
+      bbContentHeight.textContent = `${bbCalculatedContentHeight}px`;
+      bbCssCode.textContent = 
+`.demo-box {
+  box-sizing: border-box;
+  width: ${w}px;
+  height: ${h}px;
+  padding: ${p}px;
+  border: ${b}px solid #28a745;
+}`; 
+    }
+
+    commonWidthRange.addEventListener('input', updateComparisonDemo);
+    commonHeightRange.addEventListener('input', updateComparisonDemo);
+    commonPaddingRange.addEventListener('input', updateComparisonDemo);
+    commonBorderRange.addEventListener('input', updateComparisonDemo);
+
+    updateComparisonDemo(); // Initial update
+  </script>
+</div>
+</body>
+</html>
+

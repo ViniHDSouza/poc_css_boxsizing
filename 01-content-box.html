@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box-sizing: Content-box</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .box-sizing-demo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .box-sizing-demo {
+    background-color: #a7d9ff;
+    border: 5px solid #007bff;
+    padding: 20px;
+    margin: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    box-sizing: content-box; /* Essencial para esta demo */
+    width: 150px; /* Valor inicial */
+    height: 100px; /* Valor inicial */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+  }
+  .box-sizing-demo::before {
+    content: 'Content Area';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.9em;
+    color: #0056b3;
+  }
+  .box-sizing-demo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
+  }
+  .box-sizing-info {
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #555;
+    text-align: center;
+  }
+  .box-sizing-info strong {
+    color: #000;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <h1>📦 Box-sizing: <code>content-box</code> em Detalhes</h1>
+  <p>No modelo <code>content-box</code>, a propriedade <code>width</code> e <code>height</code> de um elemento se referem apenas ao <strong>conteúdo</strong> do elemento. O <code>padding</code> e a <code>border</code> são adicionados a essas dimensões, aumentando o tamanho total do elemento na página.</p>
+
+  <div class="box-sizing-demo-container">
+    <div id="contentBoxDemo" class="box-sizing-demo">
+      <!-- Conteúdo do box -->
+    </div>
+    <div class="box-sizing-info">
+      <p>Largura do Conteúdo: <strong id="contentWidth">150px</strong>, Altura do Conteúdo: <strong id="contentHeight">100px</strong></p>
+      <p>Padding: <strong id="paddingValue">20px</strong>, Borda: <strong id="borderValue">5px</strong></p>
+      <p>Largura Total do Elemento: <strong id="totalWidth">150px</strong></p>
+      <p>Altura Total do Elemento: <strong id="totalHeight">100px</strong></p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label for="widthRange">Width (Conteúdo): <span id="widthOutput">150</span>px</label>
+    <input type="range" id="widthRange" min="50" max="300" value="150">
+
+    <label for="heightRange">Height (Conteúdo): <span id="heightOutput">100</span>px</label>
+    <input type="range" id="heightRange" min="50" max="200" value="100">
+
+    <label for="paddingRange">Padding: <span id="paddingOutput">20</span>px</label>
+    <input type="range" id="paddingRange" min="0" max="50" value="20">
+
+    <label for="borderRange">Border: <span id="borderOutput">5</span>px</label>
+    <input type="range" id="borderRange" min="0" max="20" value="5">
+  </div>
+
+  <h2>Código CSS Atual</h2>
+  <pre class="code-display" id="cssCode">
+.box-sizing-demo {
+  box-sizing: content-box;
+  width: 150px;
+  height: 100px;
+  padding: 20px;
+  border: 5px solid #007bff;
+}
+  </pre>
+
+  <script>
+    const demoBox = document.getElementById('contentBoxDemo');
+    const widthRange = document.getElementById('widthRange');
+    const heightRange = document.getElementById('heightRange');
+    const paddingRange = document.getElementById('paddingRange');
+    const borderRange = document.getElementById('borderRange');
+
+    const widthOutput = document.getElementById('widthOutput');
+    const heightOutput = document.getElementById('heightOutput');
+    const paddingOutput = document.getElementById('paddingOutput');
+    const borderOutput = document.getElementById('borderOutput');
+
+    const contentWidth = document.getElementById('contentWidth');
+    const contentHeight = document.getElementById('contentHeight');
+    const totalWidth = document.getElementById('totalWidth');
+    const totalHeight = document.getElementById('totalHeight');
+    const cssCode = document.getElementById('cssCode');
+
+    function updateDemo() {
+      const w = parseInt(widthRange.value);
+      const h = parseInt(heightRange.value);
+      const p = parseInt(paddingRange.value);
+      const b = parseInt(borderRange.value);
+
+      demoBox.style.width = `${w}px`;
+      demoBox.style.height = `${h}px`;
+      demoBox.style.padding = `${p}px`;
+      demoBox.style.borderWidth = `${b}px`;
+
+      widthOutput.textContent = w;
+      heightOutput.textContent = h;
+      paddingOutput.textContent = p;
+      borderOutput.textContent = b;
+
+      contentWidth.textContent = `${w}px`;
+      contentHeight.textContent = `${h}px`;
+      totalWidth.textContent = `${w + (2 * p) + (2 * b)}px`;
+      totalHeight.textContent = `${h + (2 * p) + (2 * b)}px`;
+
+      cssCode.textContent = 
+`.box-sizing-demo {
+  box-sizing: content-box;
+  width: ${w}px;
+  height: ${h}px;
+  padding: ${p}px;
+  border: ${b}px solid #007bff;
+}`; 
+    }
+
+    widthRange.addEventListener('input', updateDemo);
+    heightRange.addEventListener('input', updateDemo);
+    paddingRange.addEventListener('input', updateDemo);
+    borderRange.addEventListener('input', updateDemo);
+
+    updateDemo(); // Initial update
+  </script>
+</div>
+</body>
+</html>
+
