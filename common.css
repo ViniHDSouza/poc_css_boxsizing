@@ -205,3 +205,14 @@ p {
   font-weight: bold;
 }
 
+
+
+.demo-box {
+  flex-direction: column; /* Para alinhar imagem e texto verticalmente */
+}
+.demo-box .content-text {
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-top: 5px; /* Espaçamento entre imagem e texto */
+}
+
